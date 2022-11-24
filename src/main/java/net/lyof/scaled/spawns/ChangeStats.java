@@ -51,17 +51,24 @@ public class ChangeStats {
 // Height based stats
             if (!(Configs.getDoHeightStats(target).equals("none"))) {
                 int distance = (int) (Configs.getDefaultHeight(target) - entity.getY());
-                if (distance > 0)
-                    multiplier *= 1 + (distance * Configs.getBlockValue(target));
+                if (distance > 0) {
+                    if (Configs.getDoHeightStats(target).equals("flat")) {
+                        multiplier *= Configs.getBlockValue(target);
+                    } else {
+                        multiplier *= 1 + (distance * Configs.getBlockValue(target));
+                    }
+                }
             }
 // Time based stats
-            if (Configs.getDoTimeStats(target)) {
-                double m = 4 * (1 - Configs.getMidnightValue(target)) * Math.abs(world.getTimeOfDay(0) - 0.5)
-                        + Configs.getMidnightValue(target);
-                if (Math.abs(world.getTimeOfDay(0) - 0.5) > 0.25)
-                    m = 1;
-                multiplier *= m;
+            if (!Configs.getDoTimeStats(target).equals("none") && (Math.abs(world.getTimeOfDay(0) - 0.5) > 0.25)) {
+                if (Configs.getDoTimeStats(target).equals("midnight")) {
+                    multiplier *= 4 * (1 - Configs.getMidnightValue(target)) * Math.abs(world.getTimeOfDay(0) - 0.5)
+                            + Configs.getMidnightValue(target);
+                } else
+                if (Configs.getDoTimeStats(target).equals("flat"))
+                    multiplier *= Configs.getMidnightValue(target);
             }
+            Scaled.LOGGER.debug("multiplier: " + multiplier + " rnd: " + rnd);
 
 // Stats changes
             if (health != null && Configs.getBaseHealth(target) > 0) {

@@ -49,20 +49,24 @@ public class ModCommonConfigs {
 
         BUILDER.push("Height based stats");
         DEFAULT_HEIGHT = BUILDER.comment("y level to be considered default")
-                .define("defaultHeight", "64, 64, 48, 64");
+                .define("defaultHeight", "64, 64, 48, 0");
         DO_HEIGHT_STATS = BUILDER.comment("""
-                        "up": Target will have increased stats the higher from defaultHeight it is
+                        "flat": Target's stats will be multiplied by timesPerBlockY as long as it spawns under defaultHeight
+                        "up":   Target will have increased stats the higher from defaultHeight it is
                         "down": Target will have increased stats the lower from defaultHeight it is
                         "both": Target will have increased stats the further from defaultHeight it is
                         "none": Target won't have increased stats depending on spawn height""")
-                .define("doHeightStats", "down, none, none, down");
+                .define("doHeightStats", "down, none, none, flat");
         TIMES_PER_BLOCKY = BUILDER.comment("Value to multiply target stats with per block far from defaultHeight")
-                .define("timesPerBlockY", "0.02, 0, 0, 0.015");
+                .define("timesPerBlockY", "0.02, 0, 0, 2");
         BUILDER.pop();
 
         BUILDER.push("Time based stats");
-        DO_TIME_STATS = BUILDER.comment("Should target stats vary depending on the time of day, maximum value being reached at midnight")
-                .define("doTimeStats", "true, false, false, true");
+        DO_TIME_STATS = BUILDER.comment("""
+                        "midnight": Target's stats will get higher the closer to midnight it is, maximum value being reached at midnight
+                        "flat":     Target's stats will be multiplied by midnightValue as long as it spawns at night
+                        "none":     Target won't have increased stats depending on time of day""")
+                .define("doTimeStats", "midnight, none, none, midnight");
         MIDNIGHT_VALUE = BUILDER.comment("Maximum multiplier reached at in game midnight\nDisabled should be 1")
                 .define("midnightValue", "1.5, 1, 1, 1.5");
         BUILDER.pop();

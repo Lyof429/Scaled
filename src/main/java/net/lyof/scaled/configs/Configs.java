@@ -89,11 +89,11 @@ public class Configs {
             return 0;
         return Double.parseDouble(blockValues[i]);
     }
-    public static boolean getDoTimeStats(String target) {
+    public static String getDoTimeStats(String target) {
         int i = getIndex(target);
         if (i == -1)
-            return false;
-        return Boolean.parseBoolean(doTimeStats[i]);
+            return "false";
+        return String.valueOf(doTimeStats[i]);
     }
     public static double getMidnightValue(String target) {
         int i = getIndex(target);
